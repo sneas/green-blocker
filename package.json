@@ -1,0 +1,24 @@
+{
+  "name": "@sneas/green-blocker",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sneas/green-blocker.git"
+  },
+  "author": "Dmytro Snisarenko",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sneas/green-blocker/issues"
+  },
+  "homepage": "https://github.com/sneas/green-blocker#readme",
+  "devDependencies": {
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.7",
+    "prettier": "^2.6.1"
+  }
+}
