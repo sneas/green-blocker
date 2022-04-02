@@ -1,0 +1,35 @@
+{
+  "manifest_version": 3,
+  "name": "Green Blocker",
+  "description": "An unobtrusive way to temporarily block distracting websites.",
+  "version": "0.0.0",
+
+  "icons": {
+    "16": "images/icon-16x16.png",
+    "32": "images/icon-32x32.png",
+    "48": "images/icon-48x48.png",
+    "128": "images/icon-128x128.png"
+  },
+
+  "action": {
+    "default_icon": {
+      "16": "images/icon-16x16.png",
+      "32": "images/icon-32x32.png",
+      "48": "images/icon-48x48.png",
+      "128": "images/icon-128x128.png"
+    },
+    "default_popup": "popup/index.html"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["contentScript.js"],
+      "exclude_matches": []
+    }
+  ],
+
+  "permissions": ["storage"],
+
+  "host_permissions": ["<all_urls>"]
+}

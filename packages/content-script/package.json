@@ -1,0 +1,21 @@
+{
+  "name": "@green-blocker/content-script",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Content script",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "webpack serve --env development --open",
+    "start": "npm-run-all --parallel watch serve",
+    "content-script": "npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sneas/green-blocker.git"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

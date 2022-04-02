@@ -1,0 +1,17 @@
+{
+  "name": "@green-blocker/extension",
+  "version": "0.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "build": "webpack --env production",
+    "start": "webpack --watch --env development",
+    "extension": "npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sneas/green-blocker.git"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
