@@ -17,6 +17,12 @@
   justify-content: center;
   flex-direction: column;
   color: var(--color);
+  opacity: 1;
+  transition: opacity 0.5s;
+
+  &.green-blocker--hidden {
+    opacity: 0;
+  }
 
   .green-blocker_content {
     text-align: center;

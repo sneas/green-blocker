@@ -38,12 +38,24 @@ export const registerContentScript = async () => {
 
   const shouldBeBlocked = () => unblockUntil <= new Date().getTime();
 
-  const showBlock = () => {
+  const showBlockNow = () => {
+    block.classList.remove('green-blocker--hidden');
     document.body.appendChild(block);
   };
 
+  const showBlock = () => {
+    block.classList.add('green-blocker--hidden');
+    document.body.appendChild(block);
+    setTimeout(() => {
+      block.classList.remove('green-blocker--hidden');
+    }, 500);
+  };
+
   const hideBlock = () => {
-    document.body.removeChild(block);
+    block.classList.add('green-blocker--hidden');
+    setTimeout(() => {
+      document.body.removeChild(block);
+    }, 500);
   };
 
   const checkSoon = () => {
@@ -57,7 +69,7 @@ export const registerContentScript = async () => {
   };
 
   if (shouldBeBlocked()) {
-    showBlock();
+    showBlockNow();
   } else {
     checkSoon();
   }
