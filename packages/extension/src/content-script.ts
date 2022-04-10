@@ -1,6 +1,11 @@
 import { registerContentScript } from '@green-blocker/content-script';
 
-const notAllowedHosts = ['www.reddit.com', '9gag.com', 'pikabu.ru'];
+const notAllowedHosts = [
+  'www.reddit.com',
+  '9gag.com',
+  'pikabu.ru',
+  'www.linkedin.com',
+];
 
 const startTheBlocker = () => {
   const actualVisibility = document.documentElement.style.visibility;
