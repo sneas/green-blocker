@@ -1,7 +1,9 @@
 .green-blocker {
   --color: #333;
+  --font-size: 24px;
 
   font-family: Arial, Helvetica, sans-serif;
+  font-size: var(--font-size);
   text-transform: none;
   position: fixed;
   left: 0;
@@ -16,17 +18,23 @@
   flex-direction: column;
   color: var(--color);
 
+  .green-blocker_content {
+    text-align: center;
+  }
+
   .green-blocker_paragraph {
     margin-bottom: 16px;
   }
 
   .green-blocker_button {
     text-transform: none;
-    display: inline-block;
+    margin-bottom: 16px;
+    display: block;
+    width: 100%;
     background: white;
     color: inherit;
     border: 1px solid black;
-    padding: 8px;
+    padding: 8px 24px;
     font: inherit;
     font-weight: bold;
     cursor: pointer;
