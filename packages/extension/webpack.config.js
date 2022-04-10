@@ -1,5 +1,4 @@
 const { merge } = require('webpack-merge');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
@@ -7,7 +6,7 @@ const path = require('path');
 const prodConfig = {
   mode: 'production',
   entry: {
-    contentScript: './src/contentScript.ts',
+    'content-script': './src/content-script.ts',
   },
   module: {
     rules: [
@@ -35,6 +34,10 @@ const prodConfig = {
     }),
     new CopyPlugin({
       patterns: [
+        {
+          from: '../content-script/dist/main.css',
+          to: 'content-script.css',
+        },
         {
           from: '../popup/dist',
           to: 'popup',

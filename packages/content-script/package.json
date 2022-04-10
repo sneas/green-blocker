@@ -6,8 +6,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc --watch",
+    "build": "webpack --env production",
+    "watch": "webpack --watch --env production",
     "serve": "webpack serve --env development --open",
     "start": "npm-run-all --parallel watch serve",
     "content-script": "npm start"

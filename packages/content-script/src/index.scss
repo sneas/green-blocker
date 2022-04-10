@@ -1,0 +1,40 @@
+.green-blocker {
+  --color: #333;
+
+  font-family: Arial, Helvetica, sans-serif;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background: white;
+  z-index: 2147483647;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: var(--color);
+
+  .green-blocker_paragraph {
+    margin-bottom: 16px;
+  }
+
+  .green-blocker_button {
+    display: inline-block;
+    background: white;
+    color: inherit;
+    border: 1px solid black;
+    padding: 8px;
+    font: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 6px;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 200ms;
+
+    &:hover {
+      background: #e7e7e7;
+    }
+  }
+}

@@ -24,8 +24,10 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["contentScript.js"],
-      "exclude_matches": []
+      "js": ["content-script.js"],
+      "css": ["content-script.css"],
+      "exclude_matches": ["http://localhost:8010/"],
+      "run_at": "document_start"
     }
   ],
 
