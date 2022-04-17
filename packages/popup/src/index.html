@@ -7,10 +7,45 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+    <style>
+      .refresh-container {
+        max-height: 5rem;
+        opacity: 1;
+        transition: max-height 0.3s, opacity 0.3s;
+      }
+      .hidden {
+        max-height: 0;
+        opacity: 0;
+      }
+      .no-outline:focus,
+      .no-outline:active {
+        box-shadow: none !important;
+      }
+    </style>
   </head>
-  <body>
+  <body class="py-3">
     <div class="container">
-      <h1>Popup</h1>
+      <div class="mb-1">GreenBlocker</div>
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="thisHost" />
+        <label class="form-check-label text-nowrap" for="thisHost"
+          >Blocks this website</label
+        >
+      </div>
+      <div
+        class="overflow-hidden hidden refresh-container"
+        id="refreshContainer"
+      >
+        <div class="pt-3">
+          <button
+            type="button"
+            class="btn btn-primary btn-lg btn-block w-100 no-outline"
+            id="refreshButton"
+          >
+            Refresh
+          </button>
+        </div>
+      </div>
     </div>
   </body>
 </html>

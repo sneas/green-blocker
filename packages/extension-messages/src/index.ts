@@ -7,7 +7,19 @@ const createScope =
 
 const createScopedMessage = createScope('green-blocker');
 
+export type LocationUrl = {
+  host: string;
+};
+
 export const [isInTheList, onIsInTheListRequest] = createScopedMessage<
-  Location,
+  LocationUrl,
   boolean
 >('isInTheList');
+
+export const [addToTheList, onAddToTheListRequest] = createScopedMessage<
+  LocationUrl,
+  void
+>('addToTheList');
+
+export const [removeFromTheList, onRemoveFromTheListRequest] =
+  createScopedMessage<LocationUrl, void>('removeFromTheList');

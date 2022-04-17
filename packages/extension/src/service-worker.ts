@@ -1,12 +1,54 @@
-import { onIsInTheListRequest } from '@green-blocker/extension-messages';
+import {
+  LocationUrl,
+  onAddToTheListRequest,
+  onIsInTheListRequest,
+  onRemoveFromTheListRequest,
+} from '@green-blocker/extension-messages';
 
-const notAllowedHosts = [
-  'www.reddit.com',
-  '9gag.com',
-  'pikabu.ru',
-  'www.linkedin.com',
-];
+type BlockItem = {
+  host: string;
+};
+let blockItems: BlockItem[] = [];
+
+chrome.storage.sync.get(['blockItems'], (values) => {
+  blockItems = JSON.parse(values['blockItems'] ?? '[]');
+  console.log('Block Items', blockItems);
+});
+
+const isBlocked = (location: LocationUrl) =>
+  blockItems.some((blockItem) => blockItem.host === location.host);
 
 onIsInTheListRequest(async (sendResponse, location) => {
-  return sendResponse(notAllowedHosts.includes(location.host));
+  return sendResponse(isBlocked(location));
+});
+
+onAddToTheListRequest(async (sendResponse, location) => {
+  if (isBlocked(location)) {
+    return;
+  }
+
+  blockItems = [
+    ...blockItems,
+    {
+      host: location.host,
+    },
+  ];
+
+  await chrome.storage.sync.set({
+    blockItems: JSON.stringify(blockItems),
+  });
+});
+
+onRemoveFromTheListRequest(async (sendResponse, location) => {
+  if (!isBlocked(location)) {
+    return;
+  }
+
+  blockItems = blockItems.filter(
+    (blockItem) => blockItem.host !== location.host
+  );
+
+  await chrome.storage.sync.set({
+    blockItems: JSON.stringify(blockItems),
+  });
 });
