@@ -19,6 +19,7 @@
   color: var(--color);
   opacity: 1;
   transition: opacity 0.5s;
+  line-height: calc(var(--font-size) * 1.3);
 
   &.green-blocker--hidden {
     opacity: 0;
