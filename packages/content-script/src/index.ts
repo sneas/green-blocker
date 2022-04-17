@@ -40,12 +40,12 @@ export const registerContentScript = async () => {
 
   const showBlockNow = () => {
     block.classList.remove('green-blocker--hidden');
-    document.body.appendChild(block);
+    document.body.prepend(block);
   };
 
   const showBlock = () => {
     block.classList.add('green-blocker--hidden');
-    document.body.appendChild(block);
+    document.body.prepend(block);
     setTimeout(() => {
       block.classList.remove('green-blocker--hidden');
     }, 500);

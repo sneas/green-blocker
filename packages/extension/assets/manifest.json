@@ -31,6 +31,10 @@
     }
   ],
 
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+
   "permissions": ["storage"],
 
   "host_permissions": ["<all_urls>"]

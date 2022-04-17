@@ -1,29 +1,25 @@
 import { registerContentScript } from '@green-blocker/content-script';
+import { isInTheList } from '@green-blocker/extension-messages';
 
-const notAllowedHosts = [
-  'www.reddit.com',
-  '9gag.com',
-  'pikabu.ru',
-  'www.linkedin.com',
-];
-
-const startTheBlocker = () => {
+const startTheBlocker = async () => {
   const actualVisibility = document.documentElement.style.visibility;
   document.documentElement.style.visibility = 'hidden';
 
-  if (!notAllowedHosts.includes(location.host)) {
+  if (!(await isInTheList(window.location))) {
     document.documentElement.style.visibility = actualVisibility;
     return;
   }
 
-  document.addEventListener(
-    'DOMContentLoaded',
-    () => {
-      registerContentScript();
-      document.documentElement.style.visibility = actualVisibility;
-    },
-    false
-  );
+  const register = () => {
+    registerContentScript();
+    document.documentElement.style.visibility = actualVisibility;
+  };
+
+  if (!document.body) {
+    document.addEventListener('DOMContentLoaded', register, false);
+  } else {
+    register();
+  }
 };
 
 startTheBlocker();
