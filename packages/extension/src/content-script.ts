@@ -5,7 +5,14 @@ const startTheBlocker = async () => {
   const actualVisibility = document.documentElement.style.visibility;
   document.documentElement.style.visibility = 'hidden';
 
-  if (!(await isInTheList(window.location))) {
+  console.log(window.location.host);
+
+  const shouldBeApplied = await isInTheList(window.location);
+
+  console.log('Should be applied', shouldBeApplied);
+
+  if (!shouldBeApplied) {
+    console.log('is not in the list');
     document.documentElement.style.visibility = actualVisibility;
     return;
   }

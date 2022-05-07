@@ -4,51 +4,41 @@ import {
   onIsInTheListRequest,
   onRemoveFromTheListRequest,
 } from '@green-blocker/extension-messages';
+import { loadBlockItems, saveBlockItems } from './service-worker/block-items';
 
-type BlockItem = {
-  host: string;
+const isBlocked = async (location: LocationUrl): Promise<boolean> => {
+  return (await loadBlockItems()).some(
+    (blockItem) => blockItem.host === location.host
+  );
 };
-let blockItems: BlockItem[] = [];
-
-chrome.storage.sync.get(['blockItems'], (values) => {
-  blockItems = JSON.parse(values['blockItems'] ?? '[]');
-  console.log('Block Items', blockItems);
-});
-
-const isBlocked = (location: LocationUrl) =>
-  blockItems.some((blockItem) => blockItem.host === location.host);
 
 onIsInTheListRequest(async (sendResponse, location) => {
-  return sendResponse(isBlocked(location));
+  return sendResponse(await isBlocked(location));
 });
 
 onAddToTheListRequest(async (sendResponse, location) => {
-  if (isBlocked(location)) {
+  if (await isBlocked(location)) {
     return;
   }
 
-  blockItems = [
-    ...blockItems,
+  const blockItems = [
+    ...(await loadBlockItems()),
     {
       host: location.host,
     },
   ];
 
-  await chrome.storage.sync.set({
-    blockItems: JSON.stringify(blockItems),
-  });
+  await saveBlockItems(blockItems);
 });
 
 onRemoveFromTheListRequest(async (sendResponse, location) => {
-  if (!isBlocked(location)) {
+  if (!(await isBlocked(location))) {
     return;
   }
 
-  blockItems = blockItems.filter(
-    (blockItem) => blockItem.host !== location.host
+  await saveBlockItems(
+    (
+      await loadBlockItems()
+    ).filter((blockItem) => blockItem.host !== location.host)
   );
-
-  await chrome.storage.sync.set({
-    blockItems: JSON.stringify(blockItems),
-  });
 });
