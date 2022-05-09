@@ -32,23 +32,36 @@ export const registerContentScript = async () => {
 
   const storageItemName = 'green-blocker.unblock_until';
 
-  let unblockUntil: number = parseInt(
-    localStorage.getItem(storageItemName) ?? '0'
-  );
+  const getUnblockUntil = (): number =>
+    parseInt(localStorage.getItem(storageItemName) ?? '0');
 
-  const shouldBeBlocked = () => unblockUntil <= new Date().getTime();
+  const shouldBeBlocked = () => getUnblockUntil() <= new Date().getTime();
+
+  const prependBlock = () => {
+    if (document.body) {
+      document.body.prepend(block);
+    } else {
+      document.addEventListener('DOMContentLoaded', () => {
+        document.body.prepend(block);
+      });
+    }
+  };
 
   const showBlockNow = () => {
     block.classList.remove('green-blocker--hidden');
-    document.body.prepend(block);
+    prependBlock();
   };
 
   const showBlock = () => {
     block.classList.add('green-blocker--hidden');
-    document.body.prepend(block);
+    prependBlock();
     setTimeout(() => {
       block.classList.remove('green-blocker--hidden');
     }, 500);
+  };
+
+  const isBlockVisible = () => {
+    return !block.classList.contains('green-blocker--hidden');
   };
 
   const hideBlock = () => {
@@ -60,25 +73,26 @@ export const registerContentScript = async () => {
 
   const checkSoon = () => {
     setTimeout(() => {
-      if (shouldBeBlocked()) {
+      if (shouldBeBlocked() && !isBlockVisible()) {
         showBlock();
-      } else {
-        checkSoon();
+      } else if (!shouldBeBlocked() && isBlockVisible()) {
+        hideBlock();
       }
+
+      checkSoon();
     }, 5000);
   };
 
   if (shouldBeBlocked()) {
     showBlockNow();
-  } else {
-    checkSoon();
   }
 
+  checkSoon();
+
   const allow = (minutes: number) => () => {
-    unblockUntil = new Date().getTime() + minutes * 60 * 1000;
-    localStorage.setItem(storageItemName, unblockUntil.toString());
+    const newUnblockUntil = new Date().getTime() + minutes * 60 * 1000;
+    localStorage.setItem(storageItemName, newUnblockUntil.toString());
     hideBlock();
-    checkSoon();
   };
 
   button1Min.addEventListener('click', allow(1));
