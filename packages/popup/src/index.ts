@@ -5,31 +5,40 @@ import {
   LocationUrl,
   removeFromTheList,
 } from '@green-blocker/extension-messages';
+import { getCurrentUrl } from './app/url';
 
 const hostCheckbox = document.getElementById('thisHost') as HTMLInputElement;
 const refreshContainer = document.getElementById('refreshContainer');
 const refreshButton = document.getElementById('refreshButton');
 
-chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
-  const currentTab = tabs[0];
-  const url = new URL(currentTab.url);
-  const locationUrl: LocationUrl = {
-    host: url.host,
-  };
-  if (await isInTheList(locationUrl)) {
+const runTheApp = async () => {
+  const getUrlResult = await getCurrentUrl();
+  const locationUrl: LocationUrl = getUrlResult.success
+    ? getUrlResult.value
+    : {
+        ...window.location,
+      };
+
+  if (await isInTheList(locationUrl).catch(() => true)) {
     hostCheckbox.checked = true;
   }
+
+  setTimeout(() => {
+    document.getElementById('thisHostWrapper').classList.add('opacity-100');
+  }, 100);
 
   hostCheckbox.addEventListener('change', async () => {
     refreshContainer.classList.remove('hidden');
 
     if (hostCheckbox.checked) {
-      await addToTheList(locationUrl);
+      await addToTheList(locationUrl).catch(() => null);
     } else {
-      await removeFromTheList(locationUrl);
+      await removeFromTheList(locationUrl).catch(() => null);
     }
   });
-});
+};
+
+runTheApp().then();
 
 refreshButton.addEventListener('click', () => {
   chrome.tabs.reload();

@@ -7,8 +7,13 @@
   <body class="py-3">
     <div class="container">
       <div class="mb-1">GreenBlocker</div>
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="thisHost" />
+      <div class="text-nowrap">
+        <div
+          id="thisHostWrapper"
+          class="form-switch opacity-0 opacity-animation d-inline-block"
+        >
+          <input class="form-check-input" type="checkbox" id="thisHost" />
+        </div>
         <label class="form-check-label text-nowrap" for="thisHost"
           >Blocks this website</label
         >
