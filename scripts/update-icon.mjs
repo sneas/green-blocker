@@ -1,16 +1,13 @@
 import 'zx/globals';
 import { rootDir, packagesDir } from './helpers/dirs.mjs';
 
-const pngIcon = 'icon.png';
-const icoIcon = 'favicon.ico';
-
 cd(rootDir);
-await $`convert assets/${pngIcon} -resize 256x256 assets/${icoIcon}`;
+await $`svgexport assets/icon.svg assets/icon.png`;
 
 for (let size of ['16', '32', '48', '128']) {
   const iconFileName = `icon-${size}x${size}.png`;
-  await $`convert assets/${pngIcon} -resize ${size}x${size} packages/extension/assets/images/${iconFileName}`;
+  await $`svgexport assets/icon.svg packages/extension/assets/images/${iconFileName} ${size}:${size}`;
 }
 
-await $`cp assets/${icoIcon} ${packagesDir}/content-script/public/favicon.ico`;
-await $`cp assets/${icoIcon} ${packagesDir}/popup/src/favicon.ico`;
+await $`svgexport assets/icon.svg ${packagesDir}/content-script/public/favicon.ico 128:128`;
+await $`svgexport assets/icon.svg ${packagesDir}/popup/src/favicon.ico 128:128`;
