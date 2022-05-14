@@ -7,10 +7,6 @@ export const registerContentScript = async () => {
   const blockContent = document.createElement('div');
   blockContent.classList.add('green-blocker_content');
 
-  const blockText = document.createElement('div');
-  blockText.classList.add('green-blocker_paragraph');
-  blockText.innerText = `We don't need this shit.`;
-
   const button1Min = document.createElement('button');
   button1Min.innerText = `Allow for 1 minute`;
   button1Min.classList.add('green-blocker_button');
@@ -23,7 +19,6 @@ export const registerContentScript = async () => {
   button60Min.innerText = `Allow for 1 hour`;
   button60Min.classList.add('green-blocker_button');
 
-  blockContent.append(blockText);
   blockContent.append(button1Min);
   blockContent.append(button15Min);
   blockContent.append(button60Min);
