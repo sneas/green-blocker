@@ -67,7 +67,7 @@ export const registerContentScript = async () => {
   const hideBlock = () => {
     block.classList.add('green-blocker--hidden');
     setTimeout(() => {
-      document.body.removeChild(block);
+      document.body.contains(block) && document.body.removeChild(block);
     }, 500);
   };
 
