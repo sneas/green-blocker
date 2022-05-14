@@ -43,5 +43,8 @@
     "webpack-dev-server": "^4.7.4",
     "webpack-merge": "^5.8.0",
     "zx": "^6.0.7"
+  },
+  "dependencies": {
+    "bootstrap": "^5.1.3"
   }
 }

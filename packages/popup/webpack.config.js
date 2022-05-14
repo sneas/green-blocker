@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   mode: 'development',
@@ -12,7 +13,7 @@ module.exports = {
       },
       {
         test: /\.s[ac]ss$/i,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
       },
       {
         test: /src\/.+\.html/,
@@ -30,6 +31,7 @@ module.exports = {
       inject: true,
       favicon: './src/favicon.ico',
     }),
+    new MiniCssExtractPlugin(),
   ],
   devServer: {
     port: 8020,
