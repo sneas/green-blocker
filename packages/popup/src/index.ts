@@ -1,3 +1,4 @@
+import './styles.scss';
 import {
   addToTheList,
   isInTheList,

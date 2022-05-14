@@ -1,0 +1,13 @@
+.refresh-container {
+  max-height: 5rem;
+  opacity: 1;
+  transition: max-height 0.3s, opacity 0.3s;
+}
+.hidden {
+  max-height: 0;
+  opacity: 0;
+}
+.no-outline:focus,
+.no-outline:active {
+  box-shadow: none !important;
+}
