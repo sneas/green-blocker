@@ -1,4 +1,20 @@
+@import '~@green-blocker/styles/colors';
+$primary: $blue-350;
 @import '~bootstrap/scss/bootstrap';
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  --bs-body-color: #{$blue-50};
+  background: linear-gradient(0deg, $lime-950 0%, $lime-800 100%);
+}
+
+.logo {
+  height: 1rem;
+}
 
 .opacity-animation {
   transition: opacity 1s;

@@ -1,0 +1,15 @@
+{
+  "name": "@green-blocker/styles",
+  "version": "0.0.0",
+  "private": true,
+  "description": "",
+  "scripts": {
+    "test": "echo '@green-blocker/styles has no tests.'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sneas/green-blocker.git"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -32,8 +33,13 @@ module.exports = {
       favicon: './src/favicon.ico',
     }),
     new MiniCssExtractPlugin(),
+    new CopyPlugin({
+      patterns: [{ from: 'src/assets', to: 'assets' }],
+    }),
   ],
   devServer: {
     port: 8020,
+    hot: false,
+    liveReload: true,
   },
 };

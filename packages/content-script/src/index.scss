@@ -1,9 +1,8 @@
+@import '~@green-blocker/styles/colors';
+
 .green-blocker {
-  --color: #f2ffd8;
+  --color: #{$lime-850};
   --font-size: 24px;
-  --background-primary: #000055;
-  --background-dark: #000022;
-  --background-hover: #0000a1;
   --line-height: calc(var(--font-size) * 1.3);
 
   font-family: Arial, Helvetica, sans-serif;
@@ -14,11 +13,7 @@
   right: 0;
   bottom: 0;
   top: 0;
-  background: linear-gradient(
-    0deg,
-    var(--background-dark) 0%,
-    var(--background-primary) 100%
-  );
+  background: linear-gradient(0deg, $blue-50 0%, $blue-150 100%);
   z-index: 2147483647;
   display: flex;
   align-items: center;
@@ -55,7 +50,7 @@
     transition: background-color 200ms;
 
     &:hover {
-      background: var(--background-hover);
+      background: $blue-350;
     }
   }
 }
