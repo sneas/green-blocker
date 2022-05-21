@@ -14,6 +14,16 @@ export const getCurrentUrl = (): Promise<Result<LocationUrl>> => {
 
     chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
       const currentTab = tabs[0];
+      if (!currentTab.url) {
+        resolve({
+          success: false,
+          reason: 'Unavailable URL.',
+          extra: currentTab,
+        });
+
+        return;
+      }
+
       const url = new URL(currentTab.url);
       resolve({
         success: true,

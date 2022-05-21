@@ -9,30 +9,25 @@
       <div class="mb-3">
         <img src="assets/big-logo.svg" alt="GreenBlocker" class="logo" />
       </div>
-      <div class="text-nowrap">
-        <div
-          id="thisHostWrapper"
-          class="form-switch opacity-0 opacity-animation d-inline-block"
-        >
+      <div class="text-nowrap opacity-0 opacity-animation" id="thisHostWrapper">
+        <div class="form-switch d-inline-block">
           <input class="form-check-input" type="checkbox" id="thisHost" />
         </div>
         <label class="form-check-label text-nowrap" for="thisHost"
           >Blocks this website</label
         >
       </div>
-      <div
-        class="overflow-hidden hidden refresh-container"
-        id="refreshContainer"
-      >
-        <div class="pt-3">
-          <button
-            type="button"
-            class="btn btn-primary btn-lg btn-block w-100 no-outline rounded-pill bg-gradient"
-            id="refreshButton"
-          >
-            Refresh
-          </button>
-        </div>
+      <div id="unavailable" class="d-none">
+        This address can not be blocked.
+      </div>
+      <div class="refresh-container mt-5">
+        <button
+          type="button"
+          class="invisible opacity-0 opacity-animation btn btn-primary btn-lg btn-block w-100 no-outline rounded-pill bg-gradient"
+          id="refreshButton"
+        >
+          Refresh
+        </button>
       </div>
     </div>
   </body>
