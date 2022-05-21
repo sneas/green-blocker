@@ -23,3 +23,11 @@ export const [addToTheList, onAddToTheListRequest] = createScopedMessage<
 
 export const [removeFromTheList, onRemoveFromTheListRequest] =
   createScopedMessage<LocationUrl, void>('removeFromTheList');
+
+export const [saveToExtensionStorage, onSaveToExtensionStorage] =
+  createScopedMessage<{ key: string; value: string }, void>(
+    'saveToExtensionStorage'
+  );
+
+export const [loadFromExtensionStorage, onLoadFromExtensionStorage] =
+  createScopedMessage<string, string | undefined>('loadFromExtensionStorage');

@@ -1,6 +1,20 @@
 import './index.scss';
+import { ApiConfigOptions, configureApi, api } from './api';
+import { LocationUrl } from '@green-blocker/extension-messages';
 
-export const registerContentScript = async () => {
+type RegisterContentScriptOptions = {
+  api: ApiConfigOptions;
+  location: LocationUrl;
+};
+
+export const registerContentScript = async (
+  { api: apiOptions, location }: RegisterContentScriptOptions = {
+    api: {},
+    location: window.location,
+  }
+) => {
+  configureApi(apiOptions);
+
   const block = document.createElement('div');
   block.classList.add('green-blocker');
 
@@ -25,12 +39,13 @@ export const registerContentScript = async () => {
 
   block.append(blockContent);
 
-  const storageItemName = 'green-blocker.unblock_until';
+  const storageItemName = `unblock_until-${location.host}`;
 
-  const getUnblockUntil = (): number =>
-    parseInt(localStorage.getItem(storageItemName) ?? '0');
+  const getUnblockUntil = async (): Promise<number> =>
+    parseInt((await api.loadFromExtensionStorage(storageItemName)) ?? '0');
 
-  const shouldBeBlocked = () => getUnblockUntil() <= new Date().getTime();
+  const shouldBeBlocked = async (): Promise<boolean> =>
+    (await getUnblockUntil()) <= new Date().getTime();
 
   const prependBlock = () => {
     if (document.body) {
@@ -67,10 +82,10 @@ export const registerContentScript = async () => {
   };
 
   const checkSoon = () => {
-    setTimeout(() => {
-      if (shouldBeBlocked() && !isBlockVisible()) {
+    setTimeout(async () => {
+      if ((await shouldBeBlocked()) && !isBlockVisible()) {
         showBlock();
-      } else if (!shouldBeBlocked() && isBlockVisible()) {
+      } else if (!(await shouldBeBlocked()) && isBlockVisible()) {
         hideBlock();
       }
 
@@ -78,15 +93,18 @@ export const registerContentScript = async () => {
     }, 5000);
   };
 
-  if (shouldBeBlocked()) {
+  if (await shouldBeBlocked()) {
     showBlockNow();
   }
 
   checkSoon();
 
-  const allow = (minutes: number) => () => {
+  const allow = (minutes: number) => async () => {
     const newUnblockUntil = new Date().getTime() + minutes * 60 * 1000;
-    localStorage.setItem(storageItemName, newUnblockUntil.toString());
+    await api.saveToExtensionStorage({
+      key: storageItemName,
+      value: newUnblockUntil.toString(),
+    });
     hideBlock();
   };
 
