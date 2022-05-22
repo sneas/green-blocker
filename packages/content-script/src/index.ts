@@ -1,16 +1,13 @@
 import './index.scss';
 import { ApiConfigOptions, configureApi, api } from './api';
-import { LocationUrl } from '@green-blocker/extension-messages';
 
 type RegisterContentScriptOptions = {
   api: ApiConfigOptions;
-  location: LocationUrl;
 };
 
 export const registerContentScript = async (
-  { api: apiOptions, location }: RegisterContentScriptOptions = {
+  { api: apiOptions }: RegisterContentScriptOptions = {
     api: {},
-    location: window.location,
   }
 ) => {
   configureApi(apiOptions);
@@ -38,14 +35,6 @@ export const registerContentScript = async (
   blockContent.append(button60Min);
 
   block.append(blockContent);
-
-  const storageItemName = `unblock_until-${location.host}`;
-
-  const getUnblockUntil = async (): Promise<number> =>
-    parseInt((await api.loadFromExtensionStorage(storageItemName)) ?? '0');
-
-  const shouldBeBlocked = async (): Promise<boolean> =>
-    (await getUnblockUntil()) <= new Date().getTime();
 
   const prependBlock = () => {
     if (document.body) {
@@ -83,9 +72,11 @@ export const registerContentScript = async (
 
   const checkSoon = () => {
     setTimeout(async () => {
-      if ((await shouldBeBlocked()) && !isBlockVisible()) {
+      const shouldBeBlocked = await api.shouldBeBlocked();
+
+      if (shouldBeBlocked && !isBlockVisible()) {
         showBlock();
-      } else if (!(await shouldBeBlocked()) && isBlockVisible()) {
+      } else if (!shouldBeBlocked && isBlockVisible()) {
         hideBlock();
       }
 
@@ -93,18 +84,14 @@ export const registerContentScript = async (
     }, 5000);
   };
 
-  if (await shouldBeBlocked()) {
+  if (await api.shouldBeBlocked()) {
     showBlockNow();
   }
 
   checkSoon();
 
   const allow = (minutes: number) => async () => {
-    const newUnblockUntil = new Date().getTime() + minutes * 60 * 1000;
-    await api.saveToExtensionStorage({
-      key: storageItemName,
-      value: newUnblockUntil.toString(),
-    });
+    api.unblock(minutes).then();
     hideBlock();
   };
 

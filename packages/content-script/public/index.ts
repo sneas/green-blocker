@@ -1,14 +1,18 @@
 import { registerContentScript } from '../src';
 
+const unblockUntilKey = 'green-blocker.unblock_until';
+
 registerContentScript({
   api: {
-    saveToExtensionStorage: (item) => {
-      window.localStorage.setItem(item.key, item.value);
+    unblock: (minutes) => {
+      window.localStorage.setItem(unblockUntilKey, minutes.toString());
       return Promise.resolve();
     },
-    loadFromExtensionStorage: (key) => {
-      return Promise.resolve(window.localStorage.getItem(key) ?? undefined);
+    shouldBeBlocked: () => {
+      return Promise.resolve(
+        parseInt(window.localStorage.getItem(unblockUntilKey) ?? '0') <=
+          new Date().getTime()
+      );
     },
   },
-  location: window.location,
 }).then();

@@ -3,8 +3,8 @@ import {
   onAddToTheListRequest,
   onIsInTheListRequest,
   onRemoveFromTheListRequest,
-  onSaveToExtensionStorage,
-  onLoadFromExtensionStorage,
+  onUnblockRequest,
+  onShouldBeBlockedRequest,
 } from '@green-blocker/extension-messages';
 import { loadBlockItems, saveBlockItems } from './service-worker/block-items';
 
@@ -45,15 +45,20 @@ onRemoveFromTheListRequest(async (sendResponse, location) => {
   );
 });
 
-onSaveToExtensionStorage(async (sendResponse, data) => {
+const unblockUntilStorageItemName = 'unblock_until';
+
+onUnblockRequest(async (sendResponse, minutes) => {
+  const newUnblockUntil = new Date().getTime() + minutes * 60 * 1000;
   await chrome.storage.local.set({
-    [data.key]: data.value,
+    [unblockUntilStorageItemName]: newUnblockUntil,
   });
 
   return sendResponse(null);
 });
 
-onLoadFromExtensionStorage(async (sendResponse, key) => {
-  const result = await chrome.storage.local.get(key);
-  return sendResponse(result[key]);
+onShouldBeBlockedRequest(async (sendResponse) => {
+  const result = await chrome.storage.local.get(unblockUntilStorageItemName);
+  const unblockedUntil = result[unblockUntilStorageItemName] ?? 0;
+
+  return sendResponse(unblockedUntil <= new Date().getTime());
 });
