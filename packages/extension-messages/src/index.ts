@@ -1,4 +1,4 @@
-import { createMessage } from '@green-blocker/hermes';
+import { createMessage } from '@vocably/hermes';
 
 const createScope =
   (scope: string): typeof createMessage =>

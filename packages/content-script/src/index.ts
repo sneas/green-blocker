@@ -95,7 +95,7 @@ export const registerContentScript = async (
     hideBlock();
   };
 
-  button1Min.addEventListener('click', allow(1));
+  button1Min.addEventListener('click', allow(0.1));
   button15Min.addEventListener('click', allow(15));
   button60Min.addEventListener('click', allow(60));
 };

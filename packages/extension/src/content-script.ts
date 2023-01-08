@@ -5,14 +5,9 @@ const startTheBlocker = async () => {
   const actualVisibility = document.documentElement.style.visibility;
   document.documentElement.style.visibility = 'hidden';
 
-  console.log(window.location.host);
-
   const shouldBeApplied = await isInTheList(window.location);
 
-  console.log('Should be applied', shouldBeApplied);
-
   if (!shouldBeApplied) {
-    console.log('is not in the list');
     document.documentElement.style.visibility = actualVisibility;
     return;
   }
@@ -29,4 +24,16 @@ const startTheBlocker = async () => {
   }
 };
 
-startTheBlocker();
+const observer = new MutationObserver(() => {
+  if (!document.body) {
+    return;
+  }
+  observer.disconnect();
+
+  startTheBlocker().then();
+});
+observer.observe(document.documentElement, {
+  attributes: false,
+  childList: true,
+  subtree: false,
+});
