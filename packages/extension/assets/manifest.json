@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Green Blocker",
-  "description": "Temporarily block distracting websites in a polite, lovely way.",
-  "version": "1.0.0",
+  "description": "Temporarily block distracting websites in a polite, loving way.",
+  "version": "1.0.1",
 
   "icons": {
     "16": "images/icon-16x16.png",
