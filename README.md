@@ -2,7 +2,7 @@
 
 # Green Blocker
 
-A [Chrome Extension](https://chrome.google.com/webstore/detail/green-blocker/bddacdohgmaebklmbambdhpopdkadkdg) that temporarily blocks destructing websites in a polite and lovely manner.
+A [Chrome Extension](https://chrome.google.com/webstore/detail/green-blocker/bddacdohgmaebklmbambdhpopdkadkdg) that temporarily blocks distracting websites in a polite and loving manner.
 
 ![Screenshot](https://github.com/sneas/green-blocker/blob/main/assets/screenshot.png?raw=true)
 
