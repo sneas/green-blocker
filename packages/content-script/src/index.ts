@@ -23,23 +23,6 @@ export const registerContentScript = async (
   const blockContent = document.createElement('div');
   blockContent.classList.add('green-blocker_content');
 
-  const checkboxBlock = document.createElement('div');
-  checkboxBlock.classList.add('form-check', 'mb-2', 'text-start');
-
-  const checkbox = document.createElement('input');
-  checkbox.type = 'checkbox';
-  checkbox.id = 'allowCurrentHost';
-  checkbox.classList.add('form-check-input');
-  checkbox.checked = false;
-
-  const label = document.createElement("label");
-  label.htmlFor = "allowCurrentHost";
-  label.innerText = "Allow for the current site only";
-  label.classList.add('form-check-label', 'fs-6', 'user-select-none');
-
-  checkboxBlock.append(checkbox);
-  checkboxBlock.append(label);
-
   const button1Min = document.createElement('button');
   button1Min.innerText = `Allow for 1 minute`;
   button1Min.classList.add('green-blocker_button');
@@ -52,7 +35,6 @@ export const registerContentScript = async (
   button60Min.innerText = `Allow for 1 hour`;
   button60Min.classList.add('green-blocker_button');
 
-  blockContent.append(checkboxBlock);
   blockContent.append(button1Min);
   blockContent.append(button15Min);
   blockContent.append(button60Min);
@@ -112,27 +94,12 @@ export const registerContentScript = async (
 
   checkSoon();
 
-  const allow = (minutes: number, allowCurrentHost: boolean) => async () => {
-    console.log({ allowCurrentHost });
+  const allow = (minutes: number) => async () => {
     api.unblock(minutes).then();
     hideBlock();
-    checkbox.checked = false;
   };
 
-  checkbox.addEventListener('change', (event: Event) => {
-    const target = event.target as HTMLInputElement;
-    checkbox.checked = target.checked;
-  });
-  button1Min.addEventListener('click', () => {
-    const checkbox = document.querySelector('#allowCurrentHost') as HTMLInputElement;
-    allow(TIMEOUT.oneMin, checkbox.checked)();
-  });
-  button15Min.addEventListener('click', () => {
-    const checkbox = document.querySelector('#allowCurrentHost') as HTMLInputElement;
-    allow(TIMEOUT.fifteenMins, checkbox.checked)();
-  });
-  button60Min.addEventListener('click', () => {
-    const checkbox = document.querySelector('#allowCurrentHost') as HTMLInputElement;
-    allow(TIMEOUT.oneHour, checkbox.checked)();
-  });
+  button1Min.addEventListener('click', allow(TIMEOUT.oneMin));
+  button15Min.addEventListener('click', allow(TIMEOUT.fifteenMins));
+  button60Min.addEventListener('click', allow(TIMEOUT.oneHour));
 };
