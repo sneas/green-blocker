@@ -5,8 +5,10 @@ import {
   onRemoveFromTheListRequest,
   onUnblockRequest,
   onShouldBeBlockedRequest,
+  onGetIsUnblockAllWithSingleClickRequest,
 } from '@green-blocker/extension-messages';
 import { loadBlockItems, saveBlockItems } from './service-worker/block-items';
+import { isUnblockAllWithSingleClickEnabled } from './service-worker/unblock-all-with-single-click';
 
 const isInBlockList = async (location: LocationUrl): Promise<boolean> => {
   return (await loadBlockItems()).some(
@@ -61,4 +63,8 @@ onShouldBeBlockedRequest(async (sendResponse) => {
   const unblockedUntil = result[unblockUntilStorageItemName] ?? 0;
 
   return sendResponse(unblockedUntil <= new Date().getTime());
+});
+
+onGetIsUnblockAllWithSingleClickRequest(async (sendResponse) => {
+  return sendResponse(await isUnblockAllWithSingleClickEnabled());
 });

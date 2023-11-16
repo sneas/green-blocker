@@ -43,6 +43,10 @@ const prodConfig = {
           from: '../popup/dist',
           to: 'popup',
         },
+        {
+          from: '../options/dist',
+          to: 'options',
+        },
         { from: '.', to: '.', context: 'assets' },
       ],
     }),

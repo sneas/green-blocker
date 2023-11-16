@@ -32,3 +32,8 @@ export const [shouldBeBlocked, onShouldBeBlockedRequest] = createScopedMessage<
   void,
   boolean
 >('shouldBeBlocked');
+
+export const [
+  getIsUnblockAllWithSingleClick,
+  onGetIsUnblockAllWithSingleClickRequest,
+] = createScopedMessage<void, boolean>('isUnblockAllWithSingleClick');
