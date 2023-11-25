@@ -1,17 +1,22 @@
 import logo from './assets/logo.png';
 import './App.css';
-import { getIsUnblockAllWithSingleClick } from '@green-blocker/extension-messages';
-import { useEffect, useState } from 'react';
+import { getIsUnblockAllWithSingleClick, setIsUnblockAllWithSingleClick } from '@green-blocker/extension-messages';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 function App() {
-  const [isUnblockAllWithSingleClick, setIsUnblockAllWithSingleClick] =
+  const [isUnblockAllWithClick, setIsUnblockAllWithClick] =
     useState<null | boolean>(null);
 
+  const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    const { checked } = event.target;
+    await setIsUnblockAllWithSingleClick(checked).catch(() => null);
+  };
+
   useEffect(() => {
-    getIsUnblockAllWithSingleClick().then(setIsUnblockAllWithSingleClick);
+    getIsUnblockAllWithSingleClick().then(setIsUnblockAllWithClick);
   }, []);
 
-  if (isUnblockAllWithSingleClick === null) {
+  if (isUnblockAllWithClick === null) {
     return <div className="text-center">Loading...</div>;
   }
 
@@ -24,7 +29,11 @@ function App() {
       </header>
       <div>
         <label>
-          <input type="checkbox" checked={true} /> Unblock all sites with one
+          <input
+            type="checkbox"
+            defaultChecked={isUnblockAllWithClick}
+            onChange={handleChange}
+          /> Unblock all sites with one
           click.
         </label>
       </div>

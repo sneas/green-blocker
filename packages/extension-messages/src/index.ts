@@ -2,8 +2,8 @@ import { createMessage } from '@vocably/hermes';
 
 const createScope =
   (scope: string): typeof createMessage =>
-  (identifier: string) =>
-    createMessage(`${scope}.${identifier}`);
+    (identifier: string) =>
+      createMessage(`${scope}.${identifier}`);
 
 const createScopedMessage = createScope('green-blocker');
 
@@ -37,3 +37,8 @@ export const [
   getIsUnblockAllWithSingleClick,
   onGetIsUnblockAllWithSingleClickRequest,
 ] = createScopedMessage<void, boolean>('isUnblockAllWithSingleClick');
+
+export const [
+  setIsUnblockAllWithSingleClick,
+  onSetIsUnblockAllWithSingleClick,
+] = createScopedMessage<boolean, boolean>('setUnblockAllWithSingleClick');

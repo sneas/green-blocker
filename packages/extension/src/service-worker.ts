@@ -6,6 +6,7 @@ import {
   onUnblockRequest,
   onShouldBeBlockedRequest,
   onGetIsUnblockAllWithSingleClickRequest,
+  onSetIsUnblockAllWithSingleClick,
 } from '@green-blocker/extension-messages';
 import { loadBlockItems, saveBlockItems } from './service-worker/block-items';
 import { isUnblockAllWithSingleClickEnabled } from './service-worker/unblock-all-with-single-click';
@@ -67,4 +68,12 @@ onShouldBeBlockedRequest(async (sendResponse) => {
 
 onGetIsUnblockAllWithSingleClickRequest(async (sendResponse) => {
   return sendResponse(await isUnblockAllWithSingleClickEnabled());
+});
+
+onSetIsUnblockAllWithSingleClick(async (sendResponse, checked) => {
+  await chrome.storage.local.set({
+    'isUnblockAllWithSingleClick': checked,
+  });
+
+  return sendResponse(null);
 });
