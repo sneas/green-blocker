@@ -4,7 +4,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import * as api from './api';
 
 function App() {
-  const [isUnblockAllWithClick, setIsUnblockAllWithClick] = useState<
+  const [isUnblockWithSingleClick, setIsUnblockWithSingleClick] = useState<
     null | boolean
   >(null);
 
@@ -14,10 +14,10 @@ function App() {
   };
 
   useEffect(() => {
-    api.getIsUnblockAllWithSingleClick().then(setIsUnblockAllWithClick);
+    api.getIsUnblockAllWithSingleClick().then(setIsUnblockWithSingleClick);
   }, []);
 
-  if (isUnblockAllWithClick === null) {
+  if (isUnblockWithSingleClick === null) {
     return <div className="text-center">Loading...</div>;
   }
 
@@ -32,7 +32,7 @@ function App() {
         <label>
           <input
             type="checkbox"
-            defaultChecked={isUnblockAllWithClick}
+            defaultChecked={isUnblockWithSingleClick}
             onChange={handleChange}
           />{' '}
           Unblock all sites with one click.
