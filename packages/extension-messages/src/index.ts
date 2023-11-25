@@ -41,4 +41,4 @@ export const [
 export const [
   setIsUnblockAllWithSingleClick,
   onSetIsUnblockAllWithSingleClick,
-] = createScopedMessage<boolean, boolean>('setUnblockAllWithSingleClick');
+] = createScopedMessage<boolean, void>('setUnblockAllWithSingleClick');
