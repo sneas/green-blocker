@@ -50,10 +50,12 @@ onRemoveFromTheListRequest(async (sendResponse, location) => {
 
 const unblockUntilStorageItemName = 'unblock_until';
 
-onUnblockRequest(async (sendResponse, minutes) => {
-  const newUnblockUntil = new Date().getTime() + minutes * 60 * 1000;
+onUnblockRequest(async (sendResponse, { minutes, url }) => {
+  const milliseconds = minutes * 60 * 1000;
+  const newUnblockUntil = new Date().getTime() + milliseconds;
   await chrome.storage.local.set({
     [unblockUntilStorageItemName]: newUnblockUntil,
+    url,
   });
 
   return sendResponse(null);
@@ -74,6 +76,5 @@ onSetIsUnblockAllWithSingleClick(async (sendResponse, checked) => {
   await chrome.storage.local.set({
     'isUnblockAllWithSingleClick': checked,
   });
-
   return sendResponse(null);
 });

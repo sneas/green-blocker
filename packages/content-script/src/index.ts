@@ -16,6 +16,7 @@ export const registerContentScript = async (
     api: {},
   }
 ) => {
+  const currentLocation = window.location
   configureApi(apiOptions);
   const block = document.createElement('div');
   block.classList.add('green-blocker');
@@ -77,7 +78,7 @@ export const registerContentScript = async (
 
   const checkSoon = () => {
     setTimeout(async () => {
-      const shouldBeBlocked = await api.shouldBeBlocked();
+      const shouldBeBlocked = await api.shouldBeBlocked(currentLocation);
       if (shouldBeBlocked && !isBlockVisible()) {
         showBlock();
       } else if (!shouldBeBlocked && isBlockVisible()) {
@@ -88,14 +89,14 @@ export const registerContentScript = async (
     }, 5000);
   };
 
-  if (await api.shouldBeBlocked()) {
+  if (await api.shouldBeBlocked(currentLocation)) {
     showBlockNow();
   }
 
   checkSoon();
 
   const allow = (minutes: number) => async () => {
-    api.unblock(minutes).then();
+    api.unblock({ minutes, url: currentLocation }).then();
     hideBlock();
   };
 

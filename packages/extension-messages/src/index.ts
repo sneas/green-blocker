@@ -24,15 +24,6 @@ export const [addToTheList, onAddToTheListRequest] = createScopedMessage<
 export const [removeFromTheList, onRemoveFromTheListRequest] =
   createScopedMessage<LocationUrl, void>('removeFromTheList');
 
-export const [unblock, onUnblockRequest] = createScopedMessage<number, void>(
-  'unblock'
-);
-
-export const [shouldBeBlocked, onShouldBeBlockedRequest] = createScopedMessage<
-  void,
-  boolean
->('shouldBeBlocked');
-
 export const [
   getIsUnblockAllWithSingleClick,
   onGetIsUnblockAllWithSingleClickRequest,
@@ -42,3 +33,17 @@ export const [
   setIsUnblockAllWithSingleClick,
   onSetIsUnblockAllWithSingleClick,
 ] = createScopedMessage<boolean, void>('setUnblockAllWithSingleClick');
+
+type UnblockOptions = {
+  minutes: number;
+  url: LocationUrl; // instead of host, let's pass LocationUrl object. Which is a subset of windows.location
+}
+
+export const [unblock, onUnblockRequest] = createScopedMessage<UnblockOptions, void>(
+  'unblock'
+);
+
+export const [shouldBeBlocked, onShouldBeBlockedRequest] = createScopedMessage<
+  LocationUrl,
+  boolean
+>('shouldBeBlocked');
