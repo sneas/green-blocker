@@ -24,7 +24,7 @@
   transition: opacity 0.5s;
   line-height: var(--line-height);
 
-  &.green-blocker--hidden {
+  .green-blocker--hidden {
     opacity: 0;
   }
 

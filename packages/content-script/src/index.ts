@@ -1,6 +1,12 @@
 import './index.scss';
 import { ApiConfigOptions, configureApi, api } from './api';
 
+const TIMEOUT = {
+  oneMin: 1,
+  fifteenMins: 15,
+  oneHour: 60,
+}
+
 type RegisterContentScriptOptions = {
   api: ApiConfigOptions;
 };
@@ -10,8 +16,8 @@ export const registerContentScript = async (
     api: {},
   }
 ) => {
+  const currentLocation = window.location
   configureApi(apiOptions);
-
   const block = document.createElement('div');
   block.classList.add('green-blocker');
 
@@ -72,8 +78,7 @@ export const registerContentScript = async (
 
   const checkSoon = () => {
     setTimeout(async () => {
-      const shouldBeBlocked = await api.shouldBeBlocked();
-
+      const shouldBeBlocked = await api.shouldBeBlocked(currentLocation);
       if (shouldBeBlocked && !isBlockVisible()) {
         showBlock();
       } else if (!shouldBeBlocked && isBlockVisible()) {
@@ -84,18 +89,18 @@ export const registerContentScript = async (
     }, 5000);
   };
 
-  if (await api.shouldBeBlocked()) {
+  if (await api.shouldBeBlocked(currentLocation)) {
     showBlockNow();
   }
 
   checkSoon();
 
   const allow = (minutes: number) => async () => {
-    api.unblock(minutes).then();
+    api.unblock({ minutes, url: currentLocation }).then();
     hideBlock();
   };
 
-  button1Min.addEventListener('click', allow(1));
-  button15Min.addEventListener('click', allow(15));
-  button60Min.addEventListener('click', allow(60));
+  button1Min.addEventListener('click', allow(TIMEOUT.oneMin));
+  button15Min.addEventListener('click', allow(TIMEOUT.fifteenMins));
+  button60Min.addEventListener('click', allow(TIMEOUT.oneHour));
 };

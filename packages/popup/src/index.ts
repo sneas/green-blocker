@@ -18,7 +18,7 @@ const runTheApp = async () => {
   }
 
   const locationUrl = getUrlResult.value;
-  let isChecked: boolean;
+
   try {
     hostCheckbox.checked = await isInTheList(locationUrl);
   } catch (e) {

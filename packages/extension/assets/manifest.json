@@ -21,6 +21,11 @@
     "default_popup": "popup/index.html"
   },
 
+  "options_ui": {
+    "page": "options/index.html",
+    "open_in_tab": true
+  },
+
   "content_scripts": [
     {
       "matches": ["<all_urls>"],

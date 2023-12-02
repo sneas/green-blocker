@@ -5,8 +5,11 @@ import {
   onRemoveFromTheListRequest,
   onUnblockRequest,
   onShouldBeBlockedRequest,
+  onGetIsUnblockAllWithSingleClickRequest,
+  onSetIsUnblockAllWithSingleClick,
 } from '@green-blocker/extension-messages';
 import { loadBlockItems, saveBlockItems } from './service-worker/block-items';
+import { isUnblockAllWithSingleClickEnabled } from './service-worker/unblock-all-with-single-click';
 
 const isInBlockList = async (location: LocationUrl): Promise<boolean> => {
   return (await loadBlockItems()).some(
@@ -47,10 +50,12 @@ onRemoveFromTheListRequest(async (sendResponse, location) => {
 
 const unblockUntilStorageItemName = 'unblock_until';
 
-onUnblockRequest(async (sendResponse, minutes) => {
-  const newUnblockUntil = new Date().getTime() + minutes * 60 * 1000;
+onUnblockRequest(async (sendResponse, { minutes, url }) => {
+  const milliseconds = minutes * 60 * 1000;
+  const newUnblockUntil = new Date().getTime() + milliseconds;
   await chrome.storage.local.set({
     [unblockUntilStorageItemName]: newUnblockUntil,
+    url,
   });
 
   return sendResponse(null);
@@ -61,4 +66,15 @@ onShouldBeBlockedRequest(async (sendResponse) => {
   const unblockedUntil = result[unblockUntilStorageItemName] ?? 0;
 
   return sendResponse(unblockedUntil <= new Date().getTime());
+});
+
+onGetIsUnblockAllWithSingleClickRequest(async (sendResponse) => {
+  return sendResponse(await isUnblockAllWithSingleClickEnabled());
+});
+
+onSetIsUnblockAllWithSingleClick(async (sendResponse, checked) => {
+  await chrome.storage.local.set({
+    'isUnblockAllWithSingleClick': checked,
+  });
+  return sendResponse(null);
 });
